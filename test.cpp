@@ -2,9 +2,11 @@
 
 int main()
 {
-	Hayk::LinkedList obj;
-	Hayk::LinkedList obj1(2);
-	Hayk::LinkedList obj2({1, 2, 3, 4, 5});
+    Hayk::LinkedList<int> obj({1, 2, 3, 4, 5});
+    
+    obj.pop_back();
+
+    std::cout << obj << std::endl;
 
 	return 0;
 }
