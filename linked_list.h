@@ -28,7 +28,21 @@
             void pop_front();
             void pop_back();
 
-		private:
+            size_t size() const;
+            bool empty() const;
+		
+            void clear();
+
+            void resize(size_t);
+            void reverse();
+            void swap(LinkedList<T>&);
+
+            void insert(size_t, T);
+            void erase(size_t);
+
+        private:
+            void free();
+
 			Node* head;
 		};
 	}

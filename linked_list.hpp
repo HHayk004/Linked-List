@@ -32,15 +32,7 @@
 		template <typename T>
 		LinkedList<T>::~LinkedList()
 		{
-			Node* tmp = head;
-	    	while (tmp)
-			{
-				Node* tmp_copy = tmp;
-				tmp = tmp->m_next;
-                delete tmp_copy;
-		    }
-
-            head = nullptr;
+	        free();	
 		}
 
         template <typename T>
@@ -137,11 +129,176 @@
             }
         }
 
+        template <typename T>
+        size_t LinkedList<T>::size() const
+        {
+            size_t size = 0;
+            Node* tmp = head;
+
+            while (tmp)
+            {
+                tmp = tmp->m_next;
+                ++size;
+            }
+
+            return size;
+        }
+
+        template <typename T>
+        bool LinkedList<T>::empty() const
+        {
+            return head;   
+        }
+
+        template <typename T>
+        void LinkedList<T>::clear()
+        {
+            free();
+        }
+
+        template <typename T>
+        void LinkedList<T>::resize(size_t new_size)
+        {
+            if (!head)
+            {
+                for (int i = 0; i < new_size; ++i)
+                {
+                    push_back(0);
+                }
+                return;
+            }
+
+            if (new_size == 0)
+            {
+                free();
+                return;
+            }
+
+            Node* curr = head;            
+            
+            size_t count = 1; 
+            while (curr->m_next && count < new_size)
+            {
+                curr = curr->m_next;
+                ++count;
+            }
+
+            if (!(curr->m_next))
+            {
+                while (count < new_size)
+                {
+                    curr->m_next = new Node();
+                    curr = curr->m_next;
+                    ++count;
+                }
+            }
+
+            else
+            {
+                Node* tmp = curr;
+                curr = curr->m_next;
+                tmp->m_next = nullptr;
+                while (curr)
+                {
+                    tmp = curr;
+                    curr = curr->m_next;
+                    delete tmp;
+                }
+            }
+        }
+
+        template <typename T>
+        void LinkedList<T>::reverse()
+        {
+            if (head && head->m_next)
+            {
+                Node* prev = nullptr;
+                Node* curr = head;
+                Node* tmp = nullptr;
+                while (curr)
+                {
+                    tmp = curr->m_next;
+                    curr->m_next = prev;
+                    prev = curr;
+                    curr = tmp;
+                }
+
+                head = prev;
+            }
+        }
+
+        template <typename T>
+        void LinkedList<T>::swap(LinkedList<T>& other)
+        {
+            std::swap(head, other.head);
+        }
+        
+        template <typename T>
+        void LinkedList<T>::insert(size_t pos, T val)
+        {
+            if (pos == 0)
+            {
+                push_front(val);
+                return; 
+            }
+
+            size_t count = 0;
+            Node* prev = nullptr;
+            Node* curr = head;
+            while (count < pos)
+            {
+                prev = curr;
+                curr = curr->m_next;
+                ++count;
+            }
+
+            prev->m_next = new Node(val);
+            prev->m_next->m_next = curr;
+        }
+
+        template <typename T>
+        void LinkedList<T>::erase(size_t pos)
+        {
+            if (pos == 0)
+            {
+                pop_front();
+                return;
+            }
+
+            size_t count = 0;
+            Node* prev = nullptr;
+            Node* curr = head;
+            while (count < pos)
+            {
+                prev = curr;
+                curr = curr->m_next;
+                ++count;
+            } 
+        
+            Node* next = curr->m_next;
+            delete curr;
+            prev->m_next = next;
+        }
+
+        template <typename T>
+        void LinkedList<T>::free()
+        {
+        	Node* tmp = head;
+	    	while (tmp)
+			{
+				Node* tmp_copy = tmp;
+				tmp = tmp->m_next;
+                delete tmp_copy;
+		    }
+
+            head = nullptr;
+        }
+
 		template <typename T>
 		LinkedList<T>::Node::Node(T val)
 		{
 			m_val = val;
 			m_next = nullptr;
 		}
-}
+    }
 #endif
