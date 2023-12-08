@@ -32,10 +32,12 @@
 		template <typename T>
 		LinkedList<T>::LinkedList(const LinkedList& other)
 		{
+			head = nullptr;
 			Node* node = other.head;
 			while (node)
 			{
-				push_back(node->val);
+				push_back(node->m_val);
+				node = node->m_next;
 			}
 		}
 
@@ -64,6 +66,46 @@
 
             return os;
         }
+
+		template <typename T>
+		LinkedList<T>& LinkedList<T>::operator=(std::initializer_list<T> list)
+		{
+			free();
+			for (auto& elem : list)
+			{
+				push_back(elem);
+			}
+
+			return *this;
+		}
+
+		template <typename T>
+		LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other)
+		{
+			if (this != &other)
+			{
+				free();
+				Node* node = other.head;
+				while (node)
+				{
+					push_back(node->m_val);
+					node = node->m_next;
+				}
+			}
+
+			return *this;
+		}
+
+		template <typename T>
+		LinkedList<T>& LinkedList<T>::operator=(LinkedList<T>&& other)
+		{
+			free();			
+
+			head = other.head;
+			other.head = nullptr;
+
+			return *this;
+		}
 
         template <typename T>
         void LinkedList<T>::push_front(T val)

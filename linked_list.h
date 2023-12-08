@@ -25,6 +25,10 @@
 
             std::ostream& operator<<(std::ostream&) const;
             
+			LinkedList& operator=(std::initializer_list<T>);
+			LinkedList& operator=(const LinkedList<T>&);
+			LinkedList& operator=(LinkedList<T>&&);
+
             void push_front(T);
 			void push_back(T);
             void pop_front();
