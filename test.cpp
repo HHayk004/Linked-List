@@ -2,9 +2,9 @@
 
 int main()
 {
-    Hayk::LinkedList<int> obj({1, 2, 3, 4, 5});
+    Hayk::LinkedList<int> obj({3, 1, 2, 4, 0});
 
-    obj.erase(5);
+    obj.sort();
 
     std::cout << obj << std::endl; 
 

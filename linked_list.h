@@ -19,6 +19,8 @@
 			LinkedList();
 			LinkedList(T);
 			LinkedList(std::initializer_list<T>);	
+			LinkedList(const LinkedList<T>&);
+			LinkedList(LinkedList<T>&&);
 			~LinkedList();
 
             std::ostream& operator<<(std::ostream&) const;
@@ -39,6 +41,8 @@
 
             void insert(size_t, T);
             void erase(size_t);
+
+			void sort();
 
         private:
             void free();

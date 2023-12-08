@@ -30,6 +30,23 @@
 		}
 
 		template <typename T>
+		LinkedList<T>::LinkedList(const LinkedList& other)
+		{
+			Node* node = other.head;
+			while (node)
+			{
+				push_back(node->val);
+			}
+		}
+
+		template <typename T>
+		LinkedList<T>::LinkedList(LinkedList&& other)
+		{
+			head = other.head;
+			other.head = nullptr;
+		}
+
+		template <typename T>
 		LinkedList<T>::~LinkedList()
 		{
 	        free();	
@@ -279,6 +296,46 @@
             delete curr;
             prev->m_next = next;
         }
+
+		template <typename T>
+		void LinkedList<T>::sort()
+		{
+			if (head)
+			{	
+				Node* end = nullptr;
+				while (head != end)
+				{
+					Node* prev = nullptr;
+					Node* curr = head;
+					Node* next = curr->m_next;
+					while (next != end)
+					{
+						if (curr->m_val > next->m_val)
+						{
+							curr->m_next = next->m_next;
+							next->m_next = curr;
+
+							if (prev)
+							{
+								prev->m_next = next;
+							}
+
+							else
+							{
+								head = next;
+							}
+							
+							std::swap(curr, next);			
+						}
+
+						prev = curr;
+						curr = next;
+						next = next->m_next;
+					}
+					end = curr;
+				}
+			}
+		}
 
         template <typename T>
         void LinkedList<T>::free()
