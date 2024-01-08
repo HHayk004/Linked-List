@@ -3,13 +3,16 @@
 int main()
 {
     Hayk::LinkedList<int> obj = {3, 1, 2, 4, 0};
-	Hayk::LinkedList<int> obj1 = {1, 2, 3, 4, 5};
 
-	obj = obj1;
-	obj1 = {9, 8, 7, 6, 5, 4};
+    Hayk::LinkedList<int>::Iterator it = obj.begin();
 
-    std::cout << obj << std::endl;
-    std::cout << obj1 << std::endl;
+    obj.insert(it, -1);
+
+    for (Hayk::LinkedList<int>::Iterator it = obj.begin(); it != obj.end(); it++)
+    {
+        std::cout << *it << ' ';
+    }
+    std::cout << std::endl;
 
 	return 0;
 }

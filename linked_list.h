@@ -4,17 +4,39 @@
     #include <iostream>
 
 	namespace Hayk {
-		template <typename T>
+		
+        template <typename T>
 		class LinkedList {	
 		public:
-			class Node
+            class Node
 			{
-            public:
-                T m_val;
-                Node* m_next;
+                public:
+                    T m_val;
+                    Node* m_next;
 
-				Node(T val = 0); 
+				    Node(T val = 0); 
             };
+
+            class Iterator {
+                private:
+                	Node* ptr;
+                
+                public:
+                	Iterator();
+                	Iterator(Node*);
+                
+                	Iterator& operator=(const Iterator&);
+                	Iterator operator++();
+                	Iterator operator++(int);
+                				
+                	T& operator*() const;
+                	Node* operator->() const;
+                	bool operator==(const Iterator&) const;
+                	bool operator!=(const Iterator&) const;
+            };
+
+            Iterator begin() const;
+            Iterator end() const;
 
 			LinkedList();
 			LinkedList(T);
@@ -44,7 +66,10 @@
             void swap(LinkedList<T>&);
 
             void insert(size_t, T);
+            void insert(Iterator, T);
+
             void erase(size_t);
+            void erase(Iterator);
 
 			void sort();
 

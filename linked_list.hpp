@@ -316,6 +316,29 @@
         }
 
         template <typename T>
+        void LinkedList<T>::insert(Iterator it, T val)
+        {
+            if (it == begin())
+            {
+                push_front(val);
+                return; 
+            }
+
+            Iterator tmp_it = begin();
+            Node* prev = nullptr;
+            Node* curr = head;
+            while (tmp_it != it)
+            {
+                prev = curr;
+                curr = curr->m_next;
+                ++tmp_it;
+            }
+
+            prev->m_next = new Node(val);
+            prev->m_next->m_next = curr;
+        }
+
+        template <typename T>
         void LinkedList<T>::erase(size_t pos)
         {
             if (pos == 0)
@@ -338,6 +361,31 @@
             delete curr;
             prev->m_next = next;
         }
+
+        template <typename T>
+        void LinkedList<T>::erase(Iterator it)
+        {
+            if (it == begin())
+            {
+                pop_front();
+                return;
+            }
+
+            Iterator tmp_it = begin();
+            Node* prev = nullptr;
+            Node* curr = head;
+            while (tmp_it != it)
+            {
+                prev = curr;
+                curr = curr->m_next;
+                ++tmp_it;
+            } 
+        
+            Node* next = curr->m_next;
+            delete curr;
+            prev->m_next = next;
+        }
+
 
 		template <typename T>
 		void LinkedList<T>::sort()
@@ -399,5 +447,76 @@
 			m_val = val;
 			m_next = nullptr;
 		}
+
+        template <typename T>
+        LinkedList<T>::Iterator::Iterator() : ptr(nullptr){}
+        
+        template <typename T>
+        LinkedList<T>::Iterator::Iterator(Node* ptr1) : ptr(ptr1){}
+        
+        template <typename T>
+        typename LinkedList<T>::Iterator& LinkedList<T>::Iterator::operator=(const LinkedList<T>::Iterator& other)
+        {
+            ptr = other.ptr;
+            return *this;
+        }
+        
+        template <typename T>
+        typename LinkedList<T>::Iterator LinkedList<T>::Iterator::operator++()
+        {
+            if (ptr == nullptr)
+            {
+                std::cerr << "Error with iterator ++";
+            }
+
+            ptr = ptr->m_next;
+            return *this;
+        }
+        
+        template <typename T>
+        typename LinkedList<T>::Iterator LinkedList<T>::Iterator::operator++(int)
+        {
+            Iterator tmp = *this;
+            ptr = ptr->m_next;
+            return tmp;
+        }
+        
+        template <typename T>
+        bool LinkedList<T>::Iterator::operator==(const LinkedList<T>::Iterator& other) const
+        {
+            return this->ptr == other.ptr;
+        }
+        
+        template <typename T>
+        bool LinkedList<T>::Iterator::operator!=(const LinkedList<T>::Iterator& other) const
+        {
+            return this->ptr != other.ptr;
+        }
+        
+        template <typename T>
+        typename LinkedList<T>::Iterator LinkedList<T>::begin() const
+        {
+            Iterator it(head);
+            return it;
+        }
+        
+        template <typename T>
+        typename LinkedList<T>::Iterator LinkedList<T>::end() const
+        {
+            Iterator it(nullptr);
+            return it;
+        }
+        
+        template <typename T>
+        T& LinkedList<T>::Iterator::operator*() const
+        {
+           return ptr->m_val;
+        }
+        
+        template <typename T>
+        typename LinkedList<T>::Node* LinkedList<T>::Iterator::operator->() const
+        {
+           return ptr;
+        }
     }
 #endif
